@@ -23,7 +23,8 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <ul class="nav navbar-nav navbar-right">
-                    {% if user.is_authenticated %}
+
+                       {% if user.is_authenticated %}
                     <li>
                          <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
                          <a class="btn btn-link" href="#">Logout</a>
@@ -42,11 +43,29 @@
                     </li>
                     {% endif %}
                 </ul>
-
+                
+                <nav> <a href="about"> About us </a> </nav>
             </div>
         </div>
     </nav>
     <!--Add a dealer table here -->
+    <main>
+        
+            <section class='main-info-title'>
+
+                <h5>Hello</h5>
+
+                    <div class='main-content'>
+
+                    </div>
+            </section>
+            
+    </main>
+
+    <footer>
+        <a href="contact"> Contact us </a>
+        <p> © 2023, Will&Tech, All rights reserved. </p>
+    </footer>
 
     </body>
 
