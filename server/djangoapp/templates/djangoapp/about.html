@@ -1,11 +1,136 @@
+{% load static %}
 <html>
-    <link href="estilo.css" rel="stylesheet">
-<body>
- 
-    <navbar-header>
-        <h1> Welcome to Best Cars dealership, home to the best cars in North America. We sell domestic and imported cars at reasonable prices.</h1>
-    </navbar-header>
+    <head>
+        <link href="{% static 'css/informacion.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 
+    </head>
+<body>
+
+    <a class="navbar-brand" href="home">Best Car Delearship</a>
+    
+    <!--Add a nav bar here -->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav navbar-right">
+
+                       {% if user.is_authenticated %}
+                    <li>
+                         <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                         <a class="btn btn-link" href="#">Logout</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <form class="form-inline" action="#" method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                 <input type="text" class="form-control" placeholder="Username" name="username" >
+                                 <input type="password" class="form-control" placeholder="Password" name="psw" >
+                                 <button class="btn btn-primary" type="submit">Login</button>
+                                 <a class="btn btn-link" href="#">Sign Up</a>
+
+                                 <div class="info-nav"> 
+                                    <a href="about" role="button"> About us </a>
+                                 </div>
+
+                                 <div class="info-contact">
+                                    <a href="contact"> Contact us</a>
+                                </div>
+                                 </div>
+                            </div>
+
+                        </form>
+                    </li>
+                    {% endif %}
+                </ul>
+                
+                   
+            </div>
+        </div>
+    </nav>
+
+   
+        <main class="contenedor sombra">
+            <h2>Welcome to Best Car Dealership</h2>
+
+                <div class="servicios">
+                                <section class="NA">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-gps" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#00b341" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M12 17l-1 -4l-4 -1l9 -4z" />
+                              </svg>
+
+                            <p> Home to the Best Cars in North America.</p>
+                        </section>
+
+                        <section class="Currency">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-coin" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#00b341" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" />
+                                <path d="M12 7v10" />
+                              </svg>
+
+                            <p> We sell domestic and imported cars at reasonable prices.</p>
+                        </section>
+
+                        <section class="Garage">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-car-garage" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#00b341" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M5 20a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                <path d="M15 20a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                <path d="M5 20h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5" />
+                                <path d="M3 6l9 -4l9 4" />
+                              </svg>
+
+                                <div class="sub-garage">
+                                    <li>Oil Change: Keep your engine running smoothly with a free oil change using high-quality oil and a new filter.</li>
+                                    <li> Tire Check: Ensure your safety on the road with a thorough tire inspection, including pressure checks and tread assessment.</li>
+                                    <li>Brake Inspection: Let our experts assess your brakes to ensure they're in perfect working condition.</li>
+                                    <li>Fluid Top-Up: We'll top up essential fluids like coolant, windshield washer, and brake fluid.</li>
+                                    <li>Multi-Point Inspection: Our certified technicians will inspect your vehicle from bumper to bumper, identifying any potential issues.</li>
+                                </div>
+                            
+                        </section>
+
+                        <section>
+                                 <div class="hero-contain">
+            
+                                   <h4> 🚗 "Rev up your savings with Best Car Insurance!" 🚗 </h4>
+            
+                                <samp> 🌟 Key Features:</samp>
+
+                                        <div class="features">
+
+                                            <ul>✅ Up to 30% off your first year's premium.</ul>
+                                            <ul>✅ 24/7 roadside assistance for those unexpected emergencies.</ul>
+                                            <ul>✅ Personalized coverage options to suit your needs.</ul>
+                                            <ul>✅ Safe driver discounts for responsible motorists.</ul>
+                                            <ul>✅ Multi-car discounts for families on the go.</ul>
+                                            <ul>✅ Fast and easy online quotes.</ul>
+                                            <ul>✅ Hassle-free claims process.</ul>
+
+                                        </div>
+
+                                 </div>
+            
+                        </section>
+
+                </div>
+        </main>
+
+        <div class="footer-sec">
+        <a href="contact"> Contact us </a>
+        <p> © 2023, Will&Tech, All rights reserved. </p>
+    </div>
 
     
 <body>

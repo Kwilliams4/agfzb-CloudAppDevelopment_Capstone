@@ -21,7 +21,7 @@
 
     <body>
     
-    <a class="navbar-brand" href="#">Best Car Delearship</a>
+    <a class="navbar-brand" href="home">Best Car Delearship</a>
     
     <!--Add a nav bar here -->
     <nav class="navbar navbar-light bg-light">
@@ -36,28 +36,48 @@
                     </li>
                     {% else %}
                     <li>
-                         <form class="form-inline" action="#" method="post">
+                        <form class="form-inline" action="#" method="post">
                             {% csrf_token %}
                             <div class="input-group">
                                  <input type="text" class="form-control" placeholder="Username" name="username" >
                                  <input type="password" class="form-control" placeholder="Password" name="psw" >
                                  <button class="btn btn-primary" type="submit">Login</button>
                                  <a class="btn btn-link" href="#">Sign Up</a>
+
+                                 <div class="info-nav"> 
+                                    <a href="about" role="button"> About us </a>
+                                 </div>
+
+                                 <div class="info-contact">
+                                    <a href="contact"> Contact us</a>
+                                </div>
+                                 </div>
                             </div>
-                         </form>
+
+                        </form>
                     </li>
                     {% endif %}
                 </ul>
                 
-                <nav> <a href="about"> About us </a> </nav>
+                   
             </div>
         </div>
     </nav>
 
+    <section class="hero">
+
+        <div class="hero-contain">
+        <h2>Welcome to Best Car Dealership</h2>
+
+            
+        <!--<a class="button" href="#">Contact</a>-->
+        </div>
+</section>
+
     <!--Add a dealer table here -->
     <main class= "contenedor sombra">
         
-             <h5>Table</h5>
+             <h5>Best Cars</h5>
             
 
     <div class='servicios'>
@@ -90,12 +110,6 @@
         </tr>
 
         <tr>
-            <th>Rank</th>
-            <th>Car Make</th>
-            <th>Model</th>
-            <th>Year</th>
-        </tr>
-        <tr>
             <td>1</td>
             <td>Ford</td>
             <td>Mustang</td>
@@ -114,12 +128,6 @@
             <td>2023</td>
         </tr>
 
-        <tr>
-            <th>Rank</th>
-            <th>Car Make</th>
-            <th>Model</th>
-            <th>Year</th>
-        </tr>
         <tr>
             <td>1</td>
             <td>Ford</td>

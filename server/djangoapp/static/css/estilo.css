@@ -14,11 +14,24 @@ body{
     font-size: 16px;
     font-family: sans-serif;
     background-image: linear-gradient(to top, #DFE9F3 0%, var(--blanco));
+    
+}
+
+.info-nav{
+    justify-content: right;
+    margin-left: 30rem;
+    
+}
+
+.info-contact{
+    justify-content: right;
+    margin-left: 15rem;
+    
 }
 
 .contenedor{
-    max-width: 120rem;
-    margin: 0 auto;
+    max-width: 80rem;
+    margin: 10px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,7 +46,8 @@ body{
      background-color: var(--blanco);
      padding:2rem;
      border-radius: 1rem;
- }
+     
+      }
 
  .servicios{
     display: grid;
@@ -50,14 +64,18 @@ body{
 }
 
 .styled-table thead tr {
-    background-color: #009879;
+    background-color: #007bff;
     color: #ffffff;
     text-align: left;
 }
 
-.styled-table th,
+.styled-table th{
+    background-color: #007bffd3;
+    padding: 28px 60px;
+}
+
 .styled-table td {
-    padding: 12px 15px;
+    padding: 28px 60px;
 }
 
 .styled-table tbody tr {
@@ -69,18 +87,43 @@ body{
 }
 
 .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+    border-bottom: 2px solid #007bffd3
 }
 
 .styled-table tbody tr.active-row {
     font-weight: bold;
-    color: #009879;
+    color: #007bffd3;
 }
 
 .footer-sec{
-     justify-content: center;
+    justify-content: center;
     align-items: center;
     display: flex;
     flex-direction: column;
-    margin-top: 500px;
+    background-color: var(--oscuro);
+    color: var(--blanco);
 }
+
+.hero{
+    background-image: url(img/pista-2.jpg);
+    background-repeat: no-repeat;
+    background-size:cover;
+    margin-bottom: 2rem;
+    position: relative;
+    height: 700px;
+    
+   }
+
+/*Contenido dentro de la imagen **/
+.hero-contain{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--blanco);
+    
+}
+

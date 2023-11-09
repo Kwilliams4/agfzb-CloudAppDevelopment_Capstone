@@ -1,0 +1,76 @@
+:root{
+    --blanco:#ffffff;
+    --oscuro:#212121;
+    --primario: #FFC107;
+    --secundario:#0097A7;
+    --gris:#757575;
+}
+
+.servicios{
+    display: grid;
+    grid-template-columns: 1fr, 2fr, 1fr,;
+    
+}
+
+.info-nav{
+    justify-content: right;
+    margin-left: 30rem;
+    margin-top: 15px;
+    
+}
+
+.info-contact{
+    justify-content: right;
+    margin-left: 15rem;
+    margin-top: 15px;
+    
+}
+
+.contenedor{
+    max-width: 80rem;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.sombra{
+
+    -webkit-box-shadow: 0px 5px 15px 0px rgba(112, 112, 112,0.54);
+     -moz-box-shadow: 0px 5px 15px 0px rgba(112, 112, 112,0.54);
+     box-shadow: 0px 5px 15px 0px rgba(112, 112, 112,0.54);
+     background-color: var(--blanco);
+     padding:2rem;
+     border-radius: 1rem;
+ }
+
+ .footer-sec{
+
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: 90px;
+    background-color: var(--oscuro);
+    color: var(--blanco);
+}
+
+.pin{
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.addres{
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.stay-touch{
+    background-color:ghostwhite;
+}
