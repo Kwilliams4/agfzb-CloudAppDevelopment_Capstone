@@ -18,16 +18,11 @@ body{
 }
 
 .info-nav{
-    justify-content: right;
-    margin-left: 30rem;
+   
+    display: flex;
+    justify-content: left;
     
-}
-
-.info-contact{
-    justify-content: right;
-    margin-left: 15rem;
-    
-}
+}   
 
 .contenedor{
     max-width: 80rem;

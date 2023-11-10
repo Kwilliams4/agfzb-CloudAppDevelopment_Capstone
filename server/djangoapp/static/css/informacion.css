@@ -2,6 +2,7 @@
     justify-content: right;
     margin-left: 30rem;
     margin-top: 15px;
+    position:sticky;
     
 }
 
@@ -9,6 +10,7 @@
     justify-content: right;
     margin-left: 15rem;
     margin-top: 15px;
+    position: sticky;
     
 }
 
