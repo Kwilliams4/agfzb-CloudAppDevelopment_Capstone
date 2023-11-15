@@ -24,7 +24,8 @@
     <a class="navbar-brand" href="home">Best Car Delearship</a>
     
     <!--Add a nav bar here -->
-    <nav class="navbar navbar-light bg-light">
+    <!--<nav class="navbar navbar-light bg-light"> -->
+
         <div class="container-fluid">
             <div class="navbar-header">
                 <ul class="nav navbar-nav navbar-right">
@@ -44,13 +45,21 @@
                                  <input type="text" class="form-control" placeholder="Username" name="username" required >
                                  <input type="password" class="form-control" placeholder="Password" name="psw" required >
                                  <button class="btn btn-primary" type="submit">Login</button>
-                                 <a class="btn btn-link" href="#">Sign Up</a>
+                                 <a class="btn btn-link" href="registration/">Sign Up</a>
                             </div>
+                    {% endif %}
+                            <div class="info-nav"> 
+        
+                                <a href="about" class="btn-1"> About us </a>
+                            
+                                <a href="contact" class="btn-2"> Contact us</a>
+                            </div>
+
                         </form>
 
                     </li>
                 </ul>
-                    {% endif %}
+                    
                                                                  
                             
             </div>
@@ -58,12 +67,6 @@
         </div>
     </nav>
 
-    <div class="info-nav"> 
-        
-        <a href="about" class="btn-1"> About us </a>
-    
-        <a href="contact" class="btn-2"> Contact us</a>
-    </div>
 
 
     <section class="hero">

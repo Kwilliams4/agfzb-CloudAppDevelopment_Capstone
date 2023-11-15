@@ -20,19 +20,10 @@ body{
 .info-nav{
    
 display: flex;
-justify-content: right;
-padding-bottom: 5px;
+justify-content: center;
     
 }   
 
-.btn-1{
-margin-right: 80px;
-padding-left: 40px;
-}
-
-.btn-2{
-padding-right: 60px;
-}
 .contenedor{
     max-width: 80rem;
     margin: 10px auto;
