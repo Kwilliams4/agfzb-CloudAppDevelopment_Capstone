@@ -2,11 +2,12 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-# from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, get_dealer_from_cf_by_id, post_request
+from .restapis import get_dealers_from_cf
 from django.contrib.auth import login, logout, authenticate
 import logging
 from datetime import datetime
 from .models import CarModel
+from django.http import JsonResponse
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -74,11 +75,26 @@ def registration_request(request):
 
 def get_dealerships(request):
     if request.method == "GET":
-        context = {}
-        url = "https://e29b86ca.eu-gb.apigw.appdomain.cloud/api/dealership"
-        dealerships = get_dealers_from_cf(url)
-        context["dealership_list"] = dealerships
-        return render(request, 'djangoapp/index.html', context)
+        url = "https://us-east.functions.cloud.ibm.com/api/v1/namespaces/1db7e909-33cc-44c6-ac1a-19b1b0886a3c/actions/dealership-package/get-dealership"
+        
+        try:
+            # Get dealers from the URL
+            dealerships = get_dealers_from_cf(url)
+            
+            # Check if dealerships is not None (indicating a successful response)
+            if dealerships is not None:
+                # Create a list of dealer short names
+                dealer_names = [dealer.short_name for dealer in dealerships]
+                
+                # Return a JSON response
+                return JsonResponse({'dealer_names': dealer_names})
+            else:
+                # Handle the case where there was an issue retrieving dealership information
+                return JsonResponse({'error': 'Failed to retrieve dealership information'}, status=500)
+        
+        except Exception as e:
+            # Handle any unexpected exceptions
+            return JsonResponse({'error': f'An unexpected error occurred: {e}'}, status=500)
 
 
 
