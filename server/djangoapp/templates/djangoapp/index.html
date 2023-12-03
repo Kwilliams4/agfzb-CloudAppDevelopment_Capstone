@@ -1,13 +1,8 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Dealership Review</title>
-    <link href="{% static 'css/landing_p.css'%}" rel="stylesheet">
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -16,162 +11,82 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 
-   
 </head>
 
-    <body>
-    
-    <a class="navbar-brand" href="home">Best Car Delearship</a>
-    
-    <!--Add a nav bar here -->
-    <!--<nav class="navbar navbar-light bg-light"> -->
-
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <ul class="nav navbar-nav navbar-right">
-
-                       {% if user.is_authenticated %}
-                    <li>
-                         <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
-                         <a class="btn btn-link" href="logout">Logout</a>
-                    </li>
-
-                    {% else %}
-
-                    <li>
-                        <form class="form-inline" action="login" method="post">
-                            {% csrf_token %}
-                            <div class="input-group">
-                                 <input type="text" class="form-control" placeholder="Username" name="username" required >
-                                 <input type="password" class="form-control" placeholder="Password" name="psw" required >
-                                 <button class="btn btn-primary" type="submit">Login</button>
-                                 <a class="btn btn-link" href="registration/">Sign Up</a>
-                            </div>
-                    {% endif %}
-                            <div class="info-nav"> 
-        
-                                <a href="about" class="btn-1"> About us </a>
-                            
-                                <a href="contact" class="btn-2"> Contact us</a>
-                            </div>
-
-                        </form>
-
-                    </li>
-                </ul>
-                    
-                                                                 
-                            
+    <body class="vh-100">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealership Review</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'djangoapp:index' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'djangoapp:about' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact</a>
+                </li>
+              </ul>
+              {% if user.is_authenticated %}
+              <div class="ml-auto">
+                <span class="mr-2">{{ user.first_name }}({{ user.username }})</span>
+                <a href="{% url 'djangoapp:logout' %}">Log out</a>
+              </div>
+              {% else %}
+              <form class="form-inline ml-auto" action="{% url 'djangoapp:login' %}" method="post">
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" type="text" placeholder="Username" name="username" required>
+                <input class="form-control mr-sm-2" type="password" placeholder="Password" name="psw" required>
+                <button class="btn btn-primary my-2 my-sm-0 mr-2" type="submit">Login</button>
+                <a class="btn btn-outline-primary my-2 my-sm-0"  href="{% url 'djangoapp:registration' %}">Sign Up</a>
+              </form>
+              {% endif %}
             </div>
-                                
+          </nav>
+
+          <main role="main" class="container pt-3">
+            <h1 class="mt-2 mb-4">Dealerships</h1>
+            <table class="table" id="table" data-filter-control="true">
+                <thead>
+                    <tr>
+                        <th data-field="id">ID</th>
+                        <th data-field="full_name">Dealership Name</th>
+                        <th data-field="city">City</th>
+                        <th data-field="address">Address</th>
+                        <th data-field="zip">ZIP Code</th>
+                        <th data-field="state" data-filter-control="select">State</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dealer in dealership_list %}
+                        <tr>
+                            <td>{{dealer.id}}</td>
+                            <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{dealer.full_name}}</a></td>
+                            <td>{{dealer.city}}</td>
+                            <td>{{dealer.address}}</td>
+                            <td>{{dealer.zip}}</td>
+                            <td>{{dealer.st}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+
+    <footer class="bg-light text-center text-lg-start mt-5">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+          © 2022 <a class="text-dark" href="{% url 'djangoapp:index' %}">Dealership Review</a>
         </div>
-    </nav>
-
-
-
-    <section class="hero">
-
-        <div class="hero-contain">
-        <h2>Welcome to Best Car Dealership</h2>
-
-            
-        <!--<a class="button" href="#">Contact</a>-->
-        </div>
-</section>
-
-    <!--Add a dealer table here -->
-    <main class= "contenedor sombra">
-        
-             <h5>Best Cars</h5>
-            
-
-    <div class='servicios'>
-
-            <section>
-        <table class="styled-table">
-        <tr>
-            <th>Rank</th>
-            <th>Car Make</th>
-            <th>Model</th>
-            <th>Year</th>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>Ford</td>
-            <td>Mustang</td>
-            <td>2023</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Toyota</td>
-            <td>Camry</td>
-            <td>2023</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Tesla</td>
-            <td>Model 3</td>
-            <td>2023</td>
-        </tr>
-
-        <tr>
-            <td>1</td>
-            <td>Ford</td>
-            <td>Mustang</td>
-            <td>2023</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Toyota</td>
-            <td>Camry</td>
-            <td>2023</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Tesla</td>
-            <td>Model 3</td>
-            <td>2023</td>
-        </tr>
-
-        <tr>
-            <td>1</td>
-            <td>Ford</td>
-            <td>Mustang</td>
-            <td>2023</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Toyota</td>
-            <td>Camry</td>
-            <td>2023</td>
-        </tr>
-
-        <tr>
-            <td>3</td>
-            <td>Tesla</td>
-            <td>Model 3</td>
-            <td>2023</td>
-        </tr>
-
-        <!-- Add more rows for additional cars as needed -->
-    </table>
-    
-                    
-            </section>
-    </div>
-
-    </main>
-
-
-    <footer>
-
-        <div class="footer-sec">
-        <a href="contact"> Contact us </a>
-        <p> © 2023, Will&Tech, All rights reserved. </p>
-    </div>
-
-    </footer>
-
+      </footer>
     </body>
 
+    <script>
+        $(function() {
+          $('#table').bootstrapTable()
+        })
+      </script>
 </html>

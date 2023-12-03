@@ -7,10 +7,7 @@ app_name = 'djangoapp'
 urlpatterns = [
     # route is a string contains a URL pattern
     # view refers to the view function
-    # name the URL   
-
-    # path for about view
-    path(route='home', view=views.home, name='home'),
+    # name the URL
 
     path(route='about', view=views.about, name='about'),
 
@@ -22,10 +19,12 @@ urlpatterns = [
 
     path(route='logout', view=views.logout_request, name='logout'),
 
-    path(route='get_dealerships', view=views.get_dealerships, name='get_dealerships'),
+    path(route='', view=views.get_dealerships, name='index'),
 
-    path('dealer/<int:dealer_id>/', views.get_dealer_details, name='dealer_details'),
+    path('dealer/<int:dealer_id>/',
+         view=views.get_dealer_details, name='dealer_details'),
 
-     path(route='dealer/<int:dealer_id>/add-review/', view=views.add_review, name="add_review"),
+    path('review/<int:dealer_id>/',
+         view=views.add_review, name='add_review'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
