@@ -6,21 +6,29 @@ from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
 
-
+#O aqui puede estar el error
 def get_request(url, **kwargs):
-    print(kwargs)
+    
+    # If argument contain API KEY
+    api_key = kwargs.get("api_key")
+    print("GET from {} ".format(url))
     try:
-        if "apikey" in kwargs:
-            response = requests.get(url, headers={
-                                    'Content-Type': 'application/json'}, params=kwargs, auth=HTTPBasicAuth("apikey", kwargs["apikey"]))
+        if api_key:
+            params = dict()
+            params["text"] = kwargs["text"]
+            params["version"] = kwargs["version"]
+            params["features"] = kwargs["features"]
+            params["return_analyzed_text"] = kwargs["return_analyzed_text"]
+            response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
+                                    auth=HTTPBasicAuth('60Yh7v6jSzli4lHt2f5Sng-SC25IKlJKlMS9EaZ9sfK8', api_key))
         else:
-            response = requests.get(
-                url, headers={'Content-Type': 'application/json'}, params=kwargs)
-        status_code = response.status_code
-        print("With status {} ".format(status_code))
-        json_data = json.loads(response.text)
-    except Exception as e:
-        print("Error ", e)
+            # Call get method of requests library with URL and parameters
+            response = requests.get(url, headers={'Content-Type': 'application/json'},
+                                    params=kwargs)
+    except:
+        # If any error occurs
+        print("Network exception occurred")
+
     status_code = response.status_code
     print("With status {} ".format(status_code))
     json_data = json.loads(response.text)
@@ -40,7 +48,7 @@ def post_request(url, json_payload, **kwargs):
     except:
         print("Network exception occurred")
 
-
+# Aqui puede estar el error
 def get_dealers_from_cf(url, **kwargs):
     results = []
     # Call get_request with a URL parameter

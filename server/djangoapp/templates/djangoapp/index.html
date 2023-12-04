@@ -61,10 +61,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for dealer in get_dealerships %}
-            <p>{{ dealer.id }} - {{ dealer.full_name }} - {{ dealer.city }} - {{ dealer.address }} - {{ dealer.zip }} - {{ dealer.st }}</p>
+                    {% for dealer in get_dealerships %}
+                    <tr>
+                        <td>{{ dealer.id }}</td>
+                        <td>{{ dealer.full_name }}</td>
+                        <td>{{ dealer.city }}</td>
+                        <td>{{ dealer.address }}</td>
+                        <td>{{ dealer.zip }}</td>
+                        <td>{{ dealer.st }}</td>
+                    </tr>
                 {% endfor %}
-                 
                 </tbody>
             </table>
         </main>
