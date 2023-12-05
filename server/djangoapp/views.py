@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, get_dealer_from_cf_by_id, post_request
@@ -70,8 +71,14 @@ def get_dealerships(request):
         url = "https://us-east.functions.appdomain.cloud/api/v1/web/1db7e909-33cc-44c6-ac1a-19b1b0886a3c/dealership-package/get-dealership"
         dealerships = get_dealers_from_cf(url)
 
-        # Debugging: Print the fetched data
-        print(dealerships)
+        # Concat all dealer's short name
+        dealer_names = ' '.join([f"{dealer.short_name} {dealer.city}" for dealer in dealerships])
+
+        # Return a list of dealer short name
+        # return HttpResponse(dealer_names)
+
+        # # Debugging: Print the fetched data
+        # print(dealerships)
 
         context["get_dealerships"] = dealerships
         return render(request, 'djangoapp/index.html', context)

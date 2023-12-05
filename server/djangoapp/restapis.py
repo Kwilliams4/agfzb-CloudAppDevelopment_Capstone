@@ -8,31 +8,20 @@ from ibm_watson.natural_language_understanding_v1 import Features, SentimentOpti
 
 #O aqui puede estar el error
 def get_request(url, **kwargs):
-    
-    # If argument contain API KEY
-    api_key = kwargs.get("api_key")
+    print(kwargs)
     print("GET from {} ".format(url))
     try:
-        if api_key:
-            params = dict()
-            params["text"] = kwargs["text"]
-            params["version"] = kwargs["version"]
-            params["features"] = kwargs["features"]
-            params["return_analyzed_text"] = kwargs["return_analyzed_text"]
-            response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
-                                    auth=HTTPBasicAuth('60Yh7v6jSzli4lHt2f5Sng-SC25IKlJKlMS9EaZ9sfK8', api_key))
-        else:
-            # Call get method of requests library with URL and parameters
-            response = requests.get(url, headers={'Content-Type': 'application/json'},
+        # Call get method of requests library with URL and parameters
+        response = requests.get(url, headers={'Content-Type': 'application/json'},
                                     params=kwargs)
     except:
         # If any error occurs
         print("Network exception occurred")
-
     status_code = response.status_code
     print("With status {} ".format(status_code))
     json_data = json.loads(response.text)
     return json_data
+
 
 
 def post_request(url, json_payload, **kwargs):
@@ -53,73 +42,98 @@ def get_dealers_from_cf(url, **kwargs):
     results = []
     # Call get_request with a URL parameter
     json_result = get_request(url)
-    if json_result and "body" in json_result:
-        # Get the row list in JSON as dealers
-        dealers = json_result["body"]
+    
+    try:
+        # Check if json_result is a list
+        if isinstance(json_result, list):
+            dealers = json_result
+        else:
+            # Check if "rows" key is present and is a list
+            dealers = json_result.get("rows", [])
+            print("Number of dealers in the response:", len(dealers))
+        
         # For each dealer object
         for dealer in dealers:
-            dealer_doc = dealer["doc"]
-            # Create a CarDealer object with values in `doc` object
-            dealer_obj = CarDealer(
-                address=dealer_doc.get("address", ""),
-                city=dealer_doc.get("city", ""),
-                full_name=dealer_doc.get("full_name", ""),
-                id=dealer_doc.get("id", ""),
-                lat=dealer_doc.get("lat", ""),
-                long=dealer_doc.get("long", ""),
-                short_name=dealer_doc.get("short_name", ""),
-                st=dealer_doc.get("st", ""),
-                zip=dealer_doc.get("zip", "")
-            )
-            results.append(dealer_obj)
+            # Check if each item in the list is a dictionary with a "doc" key
+            if isinstance(dealer, dict) and "doc" in dealer:
+                dealer_doc = dealer["doc"]
+                # Create a CarDealer object with values in `doc` object
+                dealer_obj = CarDealer(address=dealer_doc.get("address", ""),
+                                       city=dealer_doc.get("city", ""),
+                                       full_name=dealer_doc.get("full_name", ""),
+                                       id=dealer_doc.get("id", ""),
+                                       lat=dealer_doc.get("lat", ""),
+                                       long=dealer_doc.get("long", ""),
+                                       short_name=dealer_doc.get("short_name", ""),
+                                       st=dealer_doc.get("st", ""),
+                                       zip=dealer_doc.get("zip", ""))
+                results.append(dealer_obj)
+    except (KeyError, TypeError) as e:
+        print(f"Error in get_dealers_from_cf: {e}")
+    
     return results
+
+
 
 
 
 def get_dealer_from_cf_by_id(url, dealer_id):
     json_result = get_request(url, id=dealer_id)
-    if json_result:
+    
+    dealer_obj = None  # Initialize with None in case the response is not as expected
+
+    if json_result and "body" in json_result and json_result["body"]:
         dealer = json_result["body"][0]
-        dealer_obj = CarDealer(address=dealer["address"], city=dealer["city"], full_name=dealer["full_name"],
-                               id=dealer["id"], lat=dealer["lat"], long=dealer["long"],
-                               short_name=dealer["short_name"],
-                               st=dealer["st"], zip=dealer["zip"])
+        dealer_obj = CarDealer(
+            address=dealer.get("address", ""),
+            city=dealer.get("city", ""),
+            full_name=dealer.get("full_name", ""),
+            id=dealer.get("id", ""),
+            lat=dealer.get("lat", ""),
+            long=dealer.get("long", ""),
+            short_name=dealer.get("short_name", ""),
+            st=dealer.get("st", ""),
+            zip=dealer.get("zip", "")
+        )
+
     return dealer_obj
 
 
 def get_dealer_reviews_from_cf(url, dealer_id):
     results = []
-    json_result = get_request(url, dealerId=dealer_id)
-    if json_result:
+    
+    try:
+        json_result = get_request(url, dealerId=dealer_id)
+
+        if not json_result or "body" not in json_result:
+            # Handle the case where 'body' key is missing
+            print("Error: 'body' key not found in JSON response.")
+            return results
+
         reviews = json_result["body"]
+
         for review in reviews:
-            if review["purchase"]:
-                review_obj = DealerReview(
-                    dealership=review["dealership"],
-                    name=review["name"],
-                    purchase=review["purchase"],
-                    review=review["review"],
-                    purchase_date=review["purchase_date"],
-                    car_make=review["car_make"],
-                    car_model=review["car_model"],
-                    car_year=review["car_year"],
-                    sentiment=analyze_review_sentiments(review["review"]),
-                    id=review['id']
-                )
-            else:
-                review_obj = DealerReview(
-                    dealership=review["dealership"],
-                    name=review["name"],
-                    purchase=review["purchase"],
-                    review=review["review"],
-                    purchase_date=None,
-                    car_make=None,
-                    car_model=None,
-                    car_year=None,
-                    sentiment=analyze_review_sentiments(review["review"]),
-                    id=review['id']
-                )
+            purchase_date = review.get("purchase_date", None)
+            car_make = review.get("car_make", None)
+            car_model = review.get("car_model", None)
+            car_year = review.get("car_year", None)
+
+            review_obj = DealerReview(
+                dealership=review.get("dealership", None),
+                name=review.get("name", None),
+                purchase=review.get("purchase", None),
+                review=review.get("review", None),
+                purchase_date=purchase_date,
+                car_make=car_make,
+                car_model=car_model,
+                car_year=car_year,
+                sentiment=analyze_review_sentiments(review.get("review", None)),
+                id=review.get("id", None)
+            )
             results.append(review_obj)
+    except Exception as e:
+        print(f"Error in get_dealer_reviews_from_cf: {e}")
+
     return results
 
 
