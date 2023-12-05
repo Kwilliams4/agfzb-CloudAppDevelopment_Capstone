@@ -7,7 +7,7 @@ from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, get_deale
 from django.contrib.auth import login, logout, authenticate
 import logging
 from datetime import datetime
-from .models import CarModel
+from .models import CarModel, CarDealer
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -84,18 +84,22 @@ def get_dealerships(request):
         return render(request, 'djangoapp/index.html', context)
 
 
+
 def get_dealer_details(request, dealer_id):
     if request.method == "GET":
-        context = {}
-        url = "https://us-east.functions.appdomain.cloud/api/v1/web/1db7e909-33cc-44c6-ac1a-19b1b0886a3c/dealership-package/get-review"
-        reviews = get_dealer_reviews_from_cf(url, dealer_id)
-        context["reviews"] = reviews
-        dealer = get_dealer_from_cf_by_id(
-            "https://us-east.functions.appdomain.cloud/api/v1/web/1db7e909-33cc-44c6-ac1a-19b1b0886a3c/dealership-package/get-dealership", dealer_id)
-        context["dealer"] = dealer
+        context={}
+        reviews_url = "https://us-east.functions.appdomain.cloud/api/v1/web/1db7e909-33cc-44c6-ac1a-19b1b0886a3c/dealership-package/get-review"
+        dealer_url = "https://us-east.functions.appdomain.cloud/api/v1/web/1db7e909-33cc-44c6-ac1a-19b1b0886a3c/dealership-package/get-dealership"
+        # Get dealers reviews from the URL
+        reviews = get_dealer_reviews_from_cf(reviews_url,dealer_id)
+        dealer = get_dealer_from_cf_by_id(dealer_url, dealer_id)
+        context['reviews']=reviews
+        context['dealer']=dealer
+        # review_text = ' '.join([review.sentiment for review in reviews])
+        # Return a list of dealer short name
+        # return HttpResponse(review_text)
         return render(request, 'djangoapp/dealer_details.html', context)
-
-
+            
 def add_review(request, dealer_id):
     context = {}
     if request.method == "GET":

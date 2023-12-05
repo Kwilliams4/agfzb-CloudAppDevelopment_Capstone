@@ -78,64 +78,40 @@ def get_dealers_from_cf(url, **kwargs):
 
 
 def get_dealer_from_cf_by_id(url, dealer_id):
-    json_result = get_request(url, id=dealer_id)
-    
-    dealer_obj = None  # Initialize with None in case the response is not as expected
-
-    if json_result and "body" in json_result and json_result["body"]:
-        dealer = json_result["body"][0]
-        dealer_obj = CarDealer(
-            address=dealer.get("address", ""),
-            city=dealer.get("city", ""),
-            full_name=dealer.get("full_name", ""),
-            id=dealer.get("id", ""),
-            lat=dealer.get("lat", ""),
-            long=dealer.get("long", ""),
-            short_name=dealer.get("short_name", ""),
-            st=dealer.get("st", ""),
-            zip=dealer.get("zip", "")
-        )
-
+    json_result = get_request(url, id=id)
+    print('json_result from line 84',json_result)
+    if json_result:
+        dealers = json_result
+        dealer_doc = dealers[0]
+        dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"],
+                                id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],  short_name=dealer_doc["short_name"],full_name=dealer_doc["full_name"],
+                                
+                                st=dealer_doc["st"], zip=dealer_doc["zip"])
     return dealer_obj
 
 
-def get_dealer_reviews_from_cf(url, dealer_id):
+def get_dealer_reviews_from_cf(url, dealerId):
     results = []
-    
-    try:
-        json_result = get_request(url, dealerId=dealer_id)
+    # Call get_request with a URL parameter
+    json_result = get_request(url,dealerId=dealerId)
+    if json_result:
+        # For each dealer object
+       for review_doc in json_result:
+        dealerReview_obj = DealerReview(
+        dealership=review_doc["dealership"], 
+        name=review_doc["name"], 
+        purchase=review_doc["purchase"],
+        review=review_doc["review"], 
+        purchase_date=review_doc["purchase_date"], 
+        car_make=review_doc["car_make"], 
+        car_model=review_doc["car_model"],
+        car_year=review_doc["car_year"], 
+        sentiment="NULL", 
+        id=review_doc["id"])
 
-        if not json_result or "body" not in json_result:
-            # Handle the case where 'body' key is missing
-            print("Error: 'body' key not found in JSON response.")
-            return results
-
-        reviews = json_result["body"]
-
-        for review in reviews:
-            purchase_date = review.get("purchase_date", None)
-            car_make = review.get("car_make", None)
-            car_model = review.get("car_model", None)
-            car_year = review.get("car_year", None)
-
-            review_obj = DealerReview(
-                dealership=review.get("dealership", None),
-                name=review.get("name", None),
-                purchase=review.get("purchase", None),
-                review=review.get("review", None),
-                purchase_date=purchase_date,
-                car_make=car_make,
-                car_model=car_model,
-                car_year=car_year,
-                sentiment=analyze_review_sentiments(review.get("review", None)),
-                id=review.get("id", None)
-            )
-            results.append(review_obj)
-    except Exception as e:
-        print(f"Error in get_dealer_reviews_from_cf: {e}")
-
+    dealerReview_obj.sentiment = analyze_review_sentiments(dealerReview_obj.review)
+    results.append(dealerReview_obj)
     return results
-
 
 def analyze_review_sentiments(dealer_review):
     API_KEY = "56Uu0KyzSNEZ8u71Q9Nu4eqYmSiLxsMV0otoCXFUCIam"
