@@ -50,8 +50,8 @@
                                 <h5>Select your car (model-make-year):</h5><br/>
                                 <select name="car" id="car" class="form-select"><br>
                                     {% for car in cars %}
-                                        <option selected value={{car.id}}>{{car.name}}-{{car.car.name}}-{{ car.year|date:"Y" }}</option>
-                                    {% endfor %}
+                                    <option selected value={{car.id}}>{{car.car_make.name}} {{car.name}} {{ car.year }}</option>
+                                {% endfor %}
                                 </select>
                             </div>
                             <div>
